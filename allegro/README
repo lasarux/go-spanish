@@ -1,2 +1,10 @@
 Go wrapper for Allegro library. More information at 
 http://alleg.sourceforge.net/
+
+There are two examples:
+
+$ make
+$ ./allegro_test (for text and maldelbrot set demo)
+
+$ make -f Makefile.gl 
+$ ./allegrogl_test (OpenGL demo)

@@ -32,16 +32,19 @@ package allegro
 
 /*
 #include <allegro.h>
+#include <alleggl.h>
 
-int a_init(void) {
-    return allegro_init();
+void a_init(void) {
+    allegro_init();
 }
 
 void a_install_keyboard(void) {
-    install_keyboard(); 
+    install_keyboard();
 }
 
 int a_set_gfx_mode(void) {
+    int depth = 24; //or 8, 16, 24
+    set_color_depth(depth);
     if (set_gfx_mode(GFX_AUTODETECT_WINDOWED, 640, 400, 0, 0) != 0) {
         if (set_gfx_mode(GFX_SAFE, 640, 400, 0, 0) != 0) {
             set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
@@ -50,6 +53,67 @@ int a_set_gfx_mode(void) {
         }
     }
     return 0;
+}
+
+int a_set_opengl_mode(void) {
+    install_allegro_gl();
+	allegro_gl_set(AGL_COLOR_DEPTH, 24);
+
+    if (set_gfx_mode(GFX_OPENGL_WINDOWED, 640, 400, 0, 0) != 0) {
+        if (set_gfx_mode(GFX_SAFE, 640, 400, 0, 0) != 0) {
+            set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+            allegro_message("Unable to set any graphic mode\n%s\n", allegro_error);
+            return 1;
+        }
+    }
+    
+    glShadeModel (GL_FLAT);
+	glEnable (GL_DEPTH_TEST);
+	glCullFace (GL_BACK);
+	glEnable (GL_CULL_FACE);
+    glShadeModel(GL_SMOOTH);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    return 0;
+}
+
+void a_glClear(void) {
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void a_glBegin(void) {
+    glBegin(GL_TRIANGLE_FAN);
+}
+
+void a_glColor3f(float r, float g, float b) {
+    glColor3f(r, g, b);
+}
+
+void a_glVertex2f(float x, float y) {
+    glVertex2f(x, y);
+}
+
+void a_glVertex3d(float x, float y, float z) {
+    glVertex3d(x, y, z);
+}
+
+void a_glEnd(void) {
+    glEnd();
+}
+
+void a_glFlush(void) {
+    glFlush();
+}
+
+void a_allegro_gl_flip(void) {
+    allegro_gl_flip();
+}
+
+void a_glRotatef(float a, float b, float c, float d) {
+    glRotatef(a, b, c, d);
+}
+
+void a_glTranslatef(float a, float b, float c) {
+    glTranslatef(a, b, c);
 }
 
 void a_textout_centre_ex(char *text) {
@@ -72,11 +136,14 @@ void a_set_window_title(char *text) {
     set_window_title(text);
 }
 
+void a_END_OF_MAIN(void) {
+    END_OF_MAIN();
+}
 */
 import "C"
 //import "unsafe"
 
-func Init() {
+func Init()  {
 	C.a_init();
 }
 
@@ -86,6 +153,10 @@ func Install_keyboard() {
 
 func Set_gfx_mode() {
     C.a_set_gfx_mode();
+}
+
+func Set_opengl_mode() {
+    C.a_set_opengl_mode();
 }
 
 func Readkey() {
@@ -104,4 +175,48 @@ func Set_window_title(text string) {
 
 func Putpixel(x, y, color int) {
     C.a_putpixel(_C_int(x), _C_int(y), _C_int(color));
+}
+
+func GLClear() {
+    C.a_glClear();
+}
+
+func GLBegin() {
+    C.a_glBegin();
+}
+
+func GLEnd() {
+    C.a_glEnd();
+}
+
+func GLFlush() {
+    C.a_glFlush();
+}
+
+func Allegro_gl_flip(){
+    C.a_allegro_gl_flip();
+}
+
+func GLColor3f(r, g, b float) {
+    C.a_glColor3f(_C_float(r), _C_float(g), _C_float(b));
+}
+
+func GLVertex2f(x, y float) {
+    C.a_glVertex2f(_C_float(x), _C_float(y));
+}
+
+func GLVertex3d(x, y, z float) {
+    C.a_glVertex3d(_C_float(x), _C_float(y), _C_float(z));
+}
+
+func GLRotatef(a, b, c, d float) {
+    C.a_glRotatef(_C_float(a), _C_float(b), _C_float(c), _C_float(d));
+}
+
+func GLTranslatef(a, b, c float) {
+    C.a_glTranslatef(_C_float(a), _C_float(b), _C_float(c));
+}
+
+func End() {
+    C.a_END_OF_MAIN();
 }
