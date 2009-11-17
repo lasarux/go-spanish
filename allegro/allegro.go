@@ -68,6 +68,10 @@ void a_readkey(void) {
     readkey();
 }
 
+void a_set_window_title(char *text) {
+    set_window_title(text);
+}
+
 */
 import "C"
 //import "unsafe"
@@ -92,7 +96,12 @@ func Textout_centr_ex(text string) {
     cs := C.CString(text);
     C.a_textout_centre_ex(cs);
 }
-    
+
+func Set_window_title(text string) {
+    cs := C.CString(text);
+    C.a_set_window_title(cs);
+}
+
 func Putpixel(x, y, color int) {
     C.a_putpixel(_C_int(x), _C_int(y), _C_int(color));
 }

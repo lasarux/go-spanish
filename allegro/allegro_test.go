@@ -38,6 +38,7 @@ func main() {
     allegro.Init();
     allegro.Install_keyboard();
     allegro.Set_gfx_mode();
+    allegro.Set_window_title("Go rules!");
     
     // Show text centered
     allegro.Textout_centr_ex("Hello, world!");
